@@ -1,28 +1,29 @@
 import streamlit as st
-import os
-from utils import *
+import requests
+import io
 
 def main():
-    # Set page configurations
-    st.set_page_config(page_title="PDF Summarizer")
+    st.title("PDF Summarizer")
 
-    st.title("PDF Summarizing App")  # Setting the title of the app
-    st.write("Summarize your PDF files in just a few seconds.")  # Displaying a description
-    st.divider()  # Inserting a divider for better layout
+    # File uploader widget to upload PDF files
+    pdf_file = st.file_uploader("Upload your PDF Document", type="pdf")
 
-    # Creating a file uploader widget to upload PDF files
-    pdf = st.file_uploader("Upload your PDF Document", type='pdf')
-
-    # Creating a button for users to submit their PDF for summarization
-    submit = st.button("Generate Summary")
-
-    # Logic to handle file upload and summarization
-    if submit and pdf is not None:
-        st.write("File uploaded successfully!")  # Example success message
-        response = summarizer(pdf)
+    if pdf_file:
+        # Display a success message
+        st.write("File uploaded successfully!")
         
-        st.subheader('Summary of File:')
-        st.write(response)
+        # Prepare the file for sending to Flask
+        files = {"file": ("uploaded.pdf", pdf_file, "application/pdf")}
+        
+        # Send the file to the Flask backend
+        response = requests.post("http://localhost:5000/summarize", files=files)
+        
+        if response.status_code == 200:
+            summary = response.json().get("summary", "No summary returned.")
+            st.subheader("Summary of File:")
+            st.write(summary)
+        else:
+            st.error("Error: " + response.json().get("error", "Unknown error"))
 
 if __name__ == "__main__":
-    main()  # Calling the main function to start the Streamlit app
+    main()
