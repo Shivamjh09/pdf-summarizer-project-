@@ -5,29 +5,21 @@ Contribution: Assisted in deploying the Large Language Model (LLM) locally, prov
 
 Steps to Deploy an LLM Locally
 
+ the steps to deploy a large language model (LLM) locally with a Flask backend and a Streamlit frontend:
 
-  *Set Up a Virtual Environment:*
-   - Create a virtual environment to isolate your dependencies.
-   - Activate the virtual environment to use it for the installation of packages and running your application.
+1. *Set Up Your Environment*:
+   - Create and activate a virtual environment.
+   - Install required packages using pip (e.g., Flask, Transformers, LangChain, PyPDF).
 
-  *Install Dependencies:*
-   - Install necessary Python libraries using pip. These libraries include transformers, torch, langchain, and pypdf.
-   - These libraries are required for model loading, text processing, and handling PDFs.
+2. *Develop Your Backend*:
+   - Write a Flask application that initializes and utilizes the LLM for summarization.
+   - Define an endpoint (e.g., /summarize) that handles PDF file uploads and returns the summary.
 
- *Prepare the Model and Dependencies:*
-   - Ensure you have access to the pre-trained model for summarization, such as "facebook/bart-large-cnn", which can be loaded using the transformers library.
-   - Confirm that you have the necessary model files and configurations to load and use the model locally.
+3. *Develop Your Frontend*:
+   - Create a Streamlit application that allows users to upload PDF files.
+   - Implement functionality to send the uploaded PDF to the Flask backend and display the summary.
 
- . *Develop the Summarization Logic:*
-   - Write or integrate the code to process text from PDF files, create embeddings, and perform summarization.
-   - Implement the text processing pipeline using CharacterTextSplitter, HuggingFaceEmbeddings, and FAISS for handling and querying text data.
+4. *Run and Test Locally*:
+   - Start the Flask server to handle API requests.
+   - Run the Streamlit application to interact with the Flask backend.
 
- *Build the Application Interface:*
-   - Set up a user interface using Streamlit to allow users to upload PDF documents and trigger summarization.
-   - Ensure the interface handles file uploads and displays the summarized text.
-
-  *Test the Local Deployment:*
-   - Run your application locally to ensure it functions correctly. Verify that the model loads, processes documents, and generates summaries as expected.
-   - Perform testing with various PDF documents to confirm the summarization quality and functionality.
-
-By following these steps, you can successfully deploy the LLM locally and integrate it with your application for document summarization.
