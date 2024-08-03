@@ -3,3 +3,4 @@ langchain
 transformers
 pypdf
 Torch
+Flask
