@@ -16,16 +16,11 @@ def main():
     # Creating a button for users to submit their PDF for summarization
     submit = st.button("Generate Summary")
 
-    # Logic to handle file upload and summarization can go here
+    # Logic to handle file upload and summarization
     if submit and pdf is not None:
         st.write("File uploaded successfully!")  # Example success message
-        # Add your summarization logic here
-
-    os.environ["OPENAI_API_KEY"] = "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"
-
-    if submit:
-        response=summarizer(pdf)
-
+        response = summarizer(pdf)
+        
         st.subheader('Summary of File:')
         st.write(response)
 
