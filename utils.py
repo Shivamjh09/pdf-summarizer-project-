@@ -40,5 +40,5 @@ def summarize():
         return jsonify({'summary': summary[0]['summary_text']})
     return jsonify({'error': 'No PDF file provided'}), 400
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     app.run(debug=True)
