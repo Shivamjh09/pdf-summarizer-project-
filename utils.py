@@ -1,8 +1,14 @@
+ from flask import Flask, request, jsonify
 from transformers import pipeline
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from pypdf import PdfReader
+
+app = Flask(_name_)
+
+# Initialize the summarization model
+summarizer_model = pipeline("summarization", model="facebook/bart-large-cnn")
 
 def process_text(text):
     text_splitter = CharacterTextSplitter(
@@ -16,22 +22,23 @@ def process_text(text):
     knowledgebase = FAISS.from_texts(chunks, embeddings)
     return knowledgebase
 
-def summarizer(pdf):
-    if pdf is not None:
-        pdf_reader = PdfReader(pdf)
+@app.route('/summarize', methods=['POST'])
+def summarize():
+    pdf_file = request.files.get('file')
+    if pdf_file:
+        pdf_reader = PdfReader(pdf_file)
         text = ""
         for page in pdf_reader.pages:
             text += page.extract_text() or ""
 
         knowledge_base = process_text(text)
-
         query = "Summarize the content of the uploaded PDF file in approximately 3-5 sentences."
-        if query:
-            docs = knowledge_base.similarity_search(query)
-            
-            # Use a local summarization model
-            summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-            summary = summarizer(docs[0].page_content)  # Summarize the content
-            
-            return summary[0]['summary_text']
+        docs = knowledge_base.similarity_search(query)
+        
+        # Generate summary
+        summary = summarizer_model(docs[0].page_content)
+        return jsonify({'summary': summary[0]['summary_text']})
+    return jsonify({'error': 'No PDF file provided'}), 400
 
+if _name_ == "_main_":
+    app.run(debug=True)
