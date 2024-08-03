@@ -35,20 +35,3 @@ def summarizer(pdf):
             
             return summary[0]['summary_text']
 
-def main():
-    st.set_page_config(page_title="PDF Summarizer")
-
-    st.title("PDF Summarizing App")
-    st.write("Summarize your PDF files in just a few seconds.")
-    st.divider()
-
-    pdf = st.file_uploader("Upload your PDF Document", type='pdf')
-    submit = st.button("Generate Summary")
-
-    if submit and pdf is not None:
-        summary = summarizer(pdf)
-        st.write("Summary:")
-        st.write(summary)
-
-if __name__ == "__main__":
-    main()
