@@ -3,9 +3,7 @@
 **[Contributor Name](https://github.com/amantiwaricse))**
 Contribution: Assisted in deploying the Large Language Model (LLM) locally, providing valuable guidance and technical support to successfully implement the local deployment process.
 
-Here's a sample README for your GitHub project that explains how to deploy an LLM model locally using your Flask application:
 
----
 
 # Local LLM Model Deployment with Flask
 
