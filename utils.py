@@ -1,5 +1,5 @@
  from flask import Flask, request, jsonify
-from transformers import pipeline
+from transformers import BartForConditionalGeneration, BartTokenizer
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
@@ -7,8 +7,15 @@ from pypdf import PdfReader
 
 app = Flask(_name_)
 
-# Initialize the summarization model
-summarizer_model = pipeline("summarization", model="facebook/bart-large-cnn")
+# Initialize the tokenizer and model locally
+tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
+model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
+
+def summarize_text(text):
+    inputs = tokenizer.encode(text, return_tensors='pt', max_length=1024, truncation=True)
+    summary_ids = model.generate(inputs, max_length=150, min_length=30, length_penalty=2.0, num_beams=4, early_stopping=True)
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    return summary
 
 def process_text(text):
     text_splitter = CharacterTextSplitter(
@@ -34,11 +41,11 @@ def summarize():
         knowledge_base = process_text(text)
         query = "Summarize the content of the uploaded PDF file in approximately 3-5 sentences."
         docs = knowledge_base.similarity_search(query)
-        
+
         # Generate summary
-        summary = summarizer_model(docs[0].page_content)
-        return jsonify({'summary': summary[0]['summary_text']})
+        summary = summarize_text(docs[0].page_content)
+        return jsonify({'summary': summary})
     return jsonify({'error': 'No PDF file provided'}), 400
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     app.run(debug=True)
