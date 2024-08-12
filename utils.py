@@ -7,7 +7,7 @@ from pypdf import PdfReader
 
 app = Flask(_name_)
 
-# Initialize the tokenizer and model locally
+# Initialize the tokenizer and model  locally
 tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
 model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
 
