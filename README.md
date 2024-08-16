@@ -1,6 +1,6 @@
 ## Contributors
-**[Contributor Name](https://openai.com/index/chatgpt/))**
-**[Contributor Name](https://github.com/amantiwaricse))**
+**[Chatgpt openai](https://openai.com/index/chatgpt/))**
+**[Aman tiwari](https://github.com/amantiwaricse))**
 Contribution: Assisted in deploying the Large Language Model (LLM) locally, providing valuable guidance and technical support to successfully implement the local deployment process.
 
 completed frontend part using stream lit best for designing frontend ui for ai project
